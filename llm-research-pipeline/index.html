@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eval-Diff Diagnostic — LLM Research Pipelines</title>
-<meta name="description" content="A 2–3 hour diagnostic that pinpoints where your API workflow loses quality against your consumer chat baseline.">
+<title>Eval-Diff Diagnostic + Gated Evolution Loop for LLM Pipelines</title>
+<meta name="description" content="A 2-3 hour diagnostic that pinpoints where your API workflow loses quality against your consumer chat baseline, plus the gated evolution loop that keeps improving accuracy without silent regressions.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1' y='1' width='10' height='10' fill='none' stroke='%23111827' stroke-width='2'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%23007AFC'/%3E%3C/svg%3E">
 <link rel="canonical" href="https://r-ayin.github.io/proposals/llm-research-pipeline/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Eval-Diff Diagnostic — LLM Research Pipelines">
-<meta property="og:description" content="A 2–3 hour diagnostic that pinpoints where your API workflow loses quality against your consumer chat baseline.">
+<meta property="og:title" content="Eval-Diff Diagnostic + Gated Evolution Loop for LLM Pipelines">
+<meta property="og:description" content="A 2-3 hour diagnostic that pinpoints where your API workflow loses quality against your consumer chat baseline, plus the gated evolution loop that keeps improving accuracy without silent regressions.">
 <meta property="og:url" content="https://r-ayin.github.io/proposals/llm-research-pipeline/">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,7 +146,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 <header data-od-id="header">
   <div class="header-in">
     <div class="wordmark"><span class="tick" aria-hidden="true"></span>eval-diff&nbsp;/&nbsp;diagnostic</div>
-    <div class="header-meta">Time-boxed · 2–3 h · Remote</div>
+    <div class="header-meta">Time-boxed diagnostic 2-3 h · then a measurable evolution loop · Remote</div>
   </div>
 </header>
 
@@ -155,7 +155,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
     <div>
       <div class="kicker reveal"><span class="bar" aria-hidden="true"></span><span class="mono-label">For LLM research pipelines that work in chat but drift in production</span></div>
       <h1 class="reveal">Your chat UI gets it right.<br><span class="dim">Your API pipeline doesn't.</span></h1>
-      <p class="sub reveal">The gap is rarely the model. It is the machinery around it: prompt rendering, schema enforcement, batching, routing. <strong>The gap is measurable</strong> — in one working session, on your own eval set.</p>
+      <p class="sub reveal">The gap is rarely the model. It is the machinery around it: prompt rendering, schema enforcement, batching, routing. <strong>The gap is measurable</strong> in one working session, on your own eval set. And the fix should keep improving itself: a gated evolution loop mines every resolved conversation into expert-truth and correction pools, promotes candidates only through hard regression gates, and accumulates a <strong>Pareto frontier of versions</strong> across accuracy, latency and token cost.</p>
       <div class="hero-cta reveal">
         <a class="btn btn-primary" href="#plan">Start with the diff <span class="arrow">↓</span></a>
         <a class="btn btn-ghost" href="#choice">Two ways to begin <span class="arrow">→</span></a>
@@ -168,7 +168,12 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 <span class="k">chat path</span>  <span class="ok">✓</span> valid JSON · 12/12 fields · cited
 <span class="k">api path</span>   <span class="bad">✗</span> 9/12 fields · enum coerced
 <span class="k">verdict</span>    schema enforcement layer
-<span class="k">next</span>       relax strict mode OR prefill defaults</div>
+<span class="k">next</span>       relax strict mode OR prefill defaults
+<span class="k">mine</span>       resolved conversations -> expert-truth pool + correction pool
+<span class="k">judge</span>      candidate vs real expert refs, never its own text
+<span class="k">gates</span>      n>=3 | wins>losses | no double-zero | fail-closed | drift<=0.6
+<span class="k">deploy</span>     stage first | backup | auto-rollback on reject
+<span class="k">frontier</span>   keep non-dominated (accuracy, latency, cost) -> pick operating point</div>
       <div class="term-caption">Output format is illustrative · runs on your eval set</div>
     </aside>
   </div>
@@ -380,10 +385,10 @@ footer{border-top:1px solid var(--line);padding:36px 0 44px;background:var(--bg)
       </div>
       <div class="opt reveal" data-od-id="opt-b">
         <span class="o-letter" aria-hidden="true">B</span>
-        <div class="o-tag">Deeper engagement</div>
-        <h3>End-to-end pipeline review</h3>
-        <p>Diagnostic plus the fixes: retrieval design, prompt pipeline, validation and batching architecture — scoped together after we see the diff.</p>
-        <div class="o-meta">&lt; 1 week to start · scoped after A, or standalone</div>
+        <div class="o-tag">Continuous iteration</div>
+        <h3>Evolution loop + Pareto frontier</h3>
+        <p>Install the loop that turns support history into measured accuracy gains: mine every resolved conversation into two pools (expert answers that worked; cases where a human had to correct the system, with the actual correction text). Candidates for prompts, chunking and retrieval config are scored by an LLM judge against real expert responses, never its own text, and promoted only through hard regression gates (minimum sample size, wins exceed losses, double-zero runs fail, judge failures fail closed, semantic-drift blocker). Deploys are staged, backed up, auto-rollback on reject. Non-dominated versions accumulate as a Pareto frontier across accuracy, latency and token cost, so you pick an operating point per workload instead of one static config.</p>
+        <div class="o-meta">Installed after the diagnostic · accuracy moves in auditable steps</div>
       </div>
     </div>
     <p class="reply-line reveal">One line is enough: <b>reply</b> <span class="kbd">A</span> or <span class="kbd">B</span> — I bring the eval harness, you bring the eval set.</p>
@@ -393,7 +398,7 @@ footer{border-top:1px solid var(--line);padding:36px 0 44px;background:var(--bg)
 <footer data-od-id="footer">
   <div class="wrap foot-in">
     <span class="mono-label">r-ayin · Freelance LLM Systems Engineer</span>
-    <span class="mono-label">Prepared for the Senior LLM / AI Research Systems Engineer role</span>
+    <span class="mono-label">Prepared for Senior LLM / RAG engineering roles (pipeline diagnosis + continuous evolution)</span>
     <span class="mono-label">Hand-built page · no template · 2026-10</span>
   </div>
 </footer>
